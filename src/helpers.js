@@ -19,7 +19,8 @@ function validateEnvVariable(envName) {
   }
 }
 
-module.exports = {
+module.exports = {  
+  RemoveNullUndefined: obj => Object.entries(obj).reduce((a, [k, v]) => (v == null ? a : (a[k] = v, a)), {}),
   BaseUrl: "https://api.ownerreservations.com/v2",
   GeneralErrorHandlerFn: async function (runFn) {
     ["owner_rez_username", "owner_rez_token", "owner_rez_user_agent"].forEach(
