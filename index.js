@@ -9,7 +9,7 @@ const HauteCouture = require("@hapipal/haute-couture");
 
 const init = async () => {
   const server = Hapi.server({
-    port: 3000,
+    port: process.env.PORT,
     host: "0.0.0.0",
   });
 
@@ -28,17 +28,18 @@ const init = async () => {
       options: swaggerOptions,
     },
   ]);
-  await server.start();
-  console.log("I exist to serve %s", server.info.uri);
   await HauteCouture.compose(server);
 
   server.route({
     method: "GET",
     path: "/",
     handler: (request, h) => {
-      return h.redirect("/documentation");
+      return h.file("public/index.html");
     },
   });
+
+  await server.start();
+  console.log("I exist to serve %s", server.info.uri);  
 };
 
 process.on("unhandledRejection", (err) => {
