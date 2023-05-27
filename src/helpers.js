@@ -21,6 +21,7 @@ function validateEnvVariable(envName) {
 
 module.exports = {  
   RemoveNullUndefined: obj => Object.entries(obj).reduce((a, [k, v]) => (v == null ? a : (a[k] = v, a)), {}),
+  LegacyV1BaseUrl: "https://secure.ownerreservations.com/api",
   BaseUrl: "https://api.ownerreservations.com/v2",
   GeneralErrorHandlerFn: async function (runFn) {
     ["owner_rez_username", "owner_rez_token", "owner_rez_user_agent"].forEach(
@@ -43,4 +44,13 @@ module.exports = {
         type: "auto",
       });
   },
+  Post: async function(url, data) {
+    return await superagent
+      .post(url)
+      .send(data)
+      .set("User-Agent", process.env.owner_rez_user_agent)
+      .auth(process.env.owner_rez_username, process.env.owner_rez_token, {
+        type: "auto",
+      });
+  }
 };
