@@ -52,5 +52,22 @@ module.exports = {
       .auth(process.env.owner_rez_username, process.env.owner_rez_token, {
         type: "auto",
       });
-  }
+  },
+  Patch: async function(url, data) {
+    return await superagent
+      .patch(url)
+      .send(data)
+      .set("User-Agent", process.env.owner_rez_user_agent)
+      .auth(process.env.owner_rez_username, process.env.owner_rez_token, {
+        type: "auto",
+      });
+  },
+  Delete: async function (url) {
+    return await superagent
+      .delete(url)
+      .set("User-Agent", process.env.owner_rez_user_agent)
+      .auth(process.env.owner_rez_username, process.env.owner_rez_token, {
+        type: "auto",
+      });
+  }  
 };

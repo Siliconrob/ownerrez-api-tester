@@ -97,6 +97,142 @@ module.exports = [
     },
   },
   {
+    method: "DELETE",
+    path: "/guests/{id}",
+    options: {
+      description: "Delete Guest by id",
+      notes: "Returns guest by id",
+      tags: ["api", "Guests"],
+      validate: {
+        params: Joi.object({
+          id: Joi.number().required().description("Guest Id"),
+        }),
+      },
+    },
+    handler: async (request, h) => {
+      return await appHelper.GeneralErrorHandlerFn(async () => {
+        const response = await appHelper.Delete(
+          `${appHelper.BaseUrl}/guests/${request.params.id}`
+        );
+        return response.body;
+      });
+    },
+  },    
+  {
+    method: "DELETE",
+    path: "/guests/{id}/phones/{phone_id}",
+    options: {
+      description: "Delete Guest phone by id",
+      notes: "Returns guest by id",
+      tags: ["api", "Guests"],
+      validate: {
+        params: Joi.object({
+          id: Joi.number().required().description("Guest Id"),
+          phone_id: Joi.number().required().description("Guest Phone Id"),
+        }),
+      },
+    },
+    handler: async (request, h) => {
+      return await appHelper.GeneralErrorHandlerFn(async () => {
+        const response = await appHelper.Delete(
+          `${appHelper.BaseUrl}/guests/${request.params.id}/phones/${request.params.phone_id}`
+        );
+        return response.body;
+      });
+    },
+  },  
+  {
+    method: "DELETE",
+    path: "/guests/{id}/addresses/{address_id}",
+    options: {
+      description: "Delete Guest address by id",
+      notes: "Returns guest by id",
+      tags: ["api", "Guests"],
+      validate: {
+        params: Joi.object({
+          id: Joi.number().required().description("Guest Id"),
+          address_id: Joi.number().required().description("Guest Address Id"),
+        }),
+      },
+    },
+    handler: async (request, h) => {
+      return await appHelper.GeneralErrorHandlerFn(async () => {
+        const response = await appHelper.Delete(
+          `${appHelper.BaseUrl}/guests/${request.params.id}/phones/${request.params.address_id}`
+        );
+        return response.body;
+      });
+    },
+  },    
+  {
+    method: "DELETE",
+    path: "/guests/{id}/emailaddresses/{email_address_id}",
+    options: {
+      description: "Delete Guest email address by id",
+      notes: "Returns guest by id",
+      tags: ["api", "Guests"],
+      validate: {
+        params: Joi.object({
+          id: Joi.number().required().description("Guest Id"),
+          email_address_id: Joi.number().required().description("Guest EmailAddress Id"),
+        }),
+      },
+    },
+    handler: async (request, h) => {
+      return await appHelper.GeneralErrorHandlerFn(async () => {
+        const response = await appHelper.Delete(
+          `${appHelper.BaseUrl}/guests/${request.params.id}/phones/${request.params.email_address_id}`
+        );
+        return response.body;
+      });
+    },
+  },   
+  {
+    method: "PATCH",
+    path: "/guests/{id}",
+    options: {
+      description: "Update an existing guest",
+      notes: "Updates an existing guest",
+      tags: ["api", "Guests"],
+      validate: {
+        params: Joi.object({
+          id: Joi.number().required().description("Guest Id"),
+        }),         
+        failAction: async (request, h, err) => {
+          // During development, log and respond with the full error.
+          console.log(err);
+          throw err;
+        },
+        payload: Joi.object({
+          addresses: Joi.array().items(address_validator).required(),
+          email_addresses: Joi.array().items(email_address_validator),
+          first_name: Joi.string()
+            .default("First Name")
+            .required()
+            .description("First Name"),
+          last_name: Joi.string()
+            .default("Last Name")
+            .required()
+            .description("Last Name"),
+          notes: Joi.string().allow(null).default(null).description("Notes"),
+          phones: Joi.array().items(phone_validator),
+        }),
+      },
+    },
+    handler: async (request, h) => {
+      const guestInput = request.payload;
+      console.log(guestInput);
+
+      return await appHelper.GeneralErrorHandlerFn(async () => {
+        const response = await appHelper.Post(
+          `${appHelper.BaseUrl}/guests/${request.params.id}`,
+          guestInput
+        );
+        return response.body;
+      });
+    },
+  },  
+  {
     method: "POST",
     path: "/guests",
     options: {
@@ -126,18 +262,15 @@ module.exports = [
       },
     },
     handler: async (request, h) => {
-      return await appHelper.GeneralErrorHandlerFn(async () => {
-        //const urlParams = new URLSearchParams(request.query);
-        const guestInput = request.payload;
-        console.log(guestInput);
+      const guestInput = request.payload;
+      console.log(guestInput);
 
-        return await appHelper.GeneralErrorHandlerFn(async () => {
-          const response = await appHelper.Post(
-            `${appHelper.BaseUrl}/guests`,
-            guestInput
-          );
-          return response.body;
-        });
+      return await appHelper.GeneralErrorHandlerFn(async () => {
+        const response = await appHelper.Post(
+          `${appHelper.BaseUrl}/guests`,
+          guestInput
+        );
+        return response.body;
       });
     },
   },
