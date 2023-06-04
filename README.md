@@ -7,7 +7,7 @@ This project includes a Node.js server script
 - This project uses the [Hapijs](https://hapi.dev/) framework (I hope it makes you as happy as it does for me to use 😁) and explores basic routes on the [OwnerRez API](https://api.ownerreservations.com/help/v2).
 - **Do not use this in production**
 
-_Last updated: 15 Apr 2023_
+_Last updated: 4 Jun 2023_
 
 ## Prerequisites
 
@@ -26,7 +26,6 @@ You'll get best use out of this project if you're familiar with basic JavaScript
 ← `routes/`: This folder holds all the predefined Swagger entry points for hapijs to communicate with the OwnerRez API.
 
 ← `src/`: This folder holds general server side helper files for working with hapijs.
-
 
 ## Try this next 🏗️
 
