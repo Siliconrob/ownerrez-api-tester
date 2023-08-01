@@ -26,6 +26,28 @@ module.exports = [
     },
   },
   {
+    method: "DELETE",
+    path: "/tags/{id}",
+    options: {
+      description: "Delete Tag by id",
+      notes: "Returns Tagby id",
+      tags: ["api", "Tags"],
+      validate: {
+        params: Joi.object({
+          id: Joi.number().required().description("Tag Id"),
+        }),
+      },
+    },
+    handler: async (request, h) => {
+      return await appHelper.GeneralErrorHandlerFn(async () => {
+        const response = await appHelper.Delete(
+          `${appHelper.BaseUrl}/tags/${request.params.id}`
+        );
+        return response.body;
+      });
+    },
+  },   
+  {
     method: "POST",
     path: "/tags",
     options: {
