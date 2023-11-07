@@ -14,7 +14,7 @@
     "@hapi/inert": "^7.1.0",
     "superagent": "^8.1.2",
     "joi": "^17.11.0",
-    "hapi-swagger": "^17.1.0",
+    "hapi-swagger": "^17.2.0",
     "@hapi/vision": "^7.0.3",
     "@hapipal/haute-couture": "^4.3.1",
     "json-case-convertor": "^1.4.4"
