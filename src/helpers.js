@@ -21,6 +21,7 @@ function validateEnvVariable(envName) {
 
 module.exports = {  
   RemoveNullUndefined: obj => Object.entries(obj).reduce((a, [k, v]) => (v == null ? a : (a[k] = v, a)), {}),
+  AncientV1BaseUrl: "https://secure.ownerreservations.com/bpapi",
   LegacyV1BaseUrl: "https://secure.ownerreservations.com/api",
   BaseUrl: "https://api.ownerreservations.com/v2",
   GeneralErrorHandlerFn: async function (runFn) {

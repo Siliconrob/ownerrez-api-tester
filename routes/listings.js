@@ -1,6 +1,7 @@
 const Joi = require("joi");
 const appHelper = require("../src/helpers");
-const querystring = require('querystring');
+const querystring = require("querystring");
+const dateHelper = require("../src/datetools");
 
 module.exports = [
   {
@@ -13,11 +14,7 @@ module.exports = [
     },
     handler: async (request, h) => {
       return await appHelper.GeneralErrorHandlerFn(async () => {
-        const response = await appHelper.Get(
-          `${
-            appHelper.BaseUrl
-          }/listings`
-        );
+        const response = await appHelper.Get(`${appHelper.BaseUrl}/listings`);
         return response.body;
       });
     },
@@ -43,5 +40,90 @@ module.exports = [
         return response.body;
       });
     },
-  },  
+  },
+  {
+    method: "GET",
+    path: "/listings/availability/{id}",
+    options: {
+      description: "Get Listing Availability By Id and Dates",
+      notes: "Get listing availability by id and dates",
+      tags: ["api", "Listing"],
+      validate: {
+        params: Joi.object({
+          id: Joi.number().required().description("Listing Id"),
+        }),
+        query: Joi.object({
+          start_date: Joi.date()
+            .optional()
+            .iso()
+            .default(dateHelper.dateOnly(new Date(Date.now())))
+            .description("Start Date"),
+          end_date: Joi.date()
+            .optional()
+            .iso()
+            .default(
+              dateHelper.dateOnly(dateHelper.addMonths(new Date(Date.now()), 1))
+            )
+            .description("End Date"),
+        }),
+      },
+    },
+    handler: async (request, h) => {
+      return await appHelper.GeneralErrorHandlerFn(async () => {
+        const inputs = { ...request.query };
+        inputs.start_date = dateHelper.dateOnly(inputs.start_date);
+        inputs.end_date = dateHelper.dateOnly(inputs.end_date);
+
+        const args = {
+          ids: [request.params.id],
+          start: inputs.start_date,
+          end: inputs.end_date,
+        };
+        const response = await appHelper.Get(`${appHelper.LegacyV1BaseUrl}/listings/availability?${querystring.stringify(args)}`);
+        return response.body;
+      });
+    },
+  },
+  {
+    method: "GET",
+    path: "/listings/ancient/{id}",
+    options: {
+      description: "Get Listing Ancient Pricing By Id and Dates",
+      notes: "Get listing ancient pricing by id and dates",
+      tags: ["api", "Listing"],
+      validate: {
+        params: Joi.object({
+          id: Joi.number().required().description("Listing Id"),
+        }),
+        query: Joi.object({
+          start_date: Joi.date()
+            .optional()
+            .iso()
+            .default(dateHelper.dateOnly(new Date(Date.now())))
+            .description("Start Date"),
+          end_date: Joi.date()
+            .optional()
+            .iso()
+            .default(
+              dateHelper.dateOnly(dateHelper.addMonths(new Date(Date.now()), 1))
+            )
+            .description("End Date"),
+        }),
+      },
+    },
+    handler: async (request, h) => {
+      return await appHelper.GeneralErrorHandlerFn(async () => {
+        const inputs = { ...request.query };
+        inputs.start_date = dateHelper.dateOnly(inputs.start_date);
+        inputs.end_date = dateHelper.dateOnly(inputs.end_date);
+
+        const args = {
+          start: inputs.start_date,
+          end: inputs.end_date,
+        };
+        const response = await appHelper.Get(`${appHelper.LegacyV1BaseUrl}/listings/${request.params.id}/pricing?${querystring.stringify(args)}`);
+        return response.body;
+      });
+    },
+  }  
 ];
