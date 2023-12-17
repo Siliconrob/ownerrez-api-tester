@@ -24,4 +24,26 @@ module.exports = [
       });
     },
   },
+  {
+    method: "DELETE",
+    path: "/quotes/{id}",
+    options: {
+      description: "Delete Quote by id",
+      notes: "Deletes quote by id",
+      tags: ["api", "Quotes"],
+      validate: {
+        params: Joi.object({
+          id: Joi.number().required().description("Quote Id"),
+        }),
+      },
+    },
+    handler: async (request, h) => {
+      return await appHelper.GeneralErrorHandlerFn(async () => {
+        const response = await appHelper.Delete(
+          `${appHelper.LegacyV1BaseUrl}/quotes/${request.params.id}`
+        );
+        return response.body;
+      });
+    },
+  },    
 ];

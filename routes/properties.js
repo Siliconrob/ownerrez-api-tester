@@ -99,4 +99,26 @@ module.exports = [
       });
     },
   },
+  {
+    method: "DELETE",
+    path: "/properties/{id}",
+    options: {
+      description: "Delete Property by id",
+      notes: "Deletes property by id",
+      tags: ["api", "Properties"],
+      validate: {
+        params: Joi.object({
+          id: Joi.number().required().description("Property Id"),
+        }),
+      },
+    },
+    handler: async (request, h) => {
+      return await appHelper.GeneralErrorHandlerFn(async () => {
+        const response = await appHelper.Delete(
+          `${appHelper.LegacyV1BaseUrl}/properties/${request.params.id}`
+        );
+        return response.body;
+      });
+    },
+  },   
 ];
