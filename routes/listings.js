@@ -1,6 +1,5 @@
 const Joi = require("joi");
 const appHelper = require("../src/helpers");
-const querystring = require("querystring");
 const dateHelper = require("../src/datetools");
 
 module.exports = [
@@ -79,7 +78,11 @@ module.exports = [
           start: inputs.start_date,
           end: inputs.end_date,
         };
-        const response = await appHelper.Get(`${appHelper.LegacyV1BaseUrl}/listings/availability?${querystring.stringify(args)}`);
+        const response = await appHelper.Get(
+          `${
+            appHelper.LegacyV1BaseUrl
+          }/listings/availability?${new URLSearchParams(args).toString()}`
+        );
         return response.body;
       });
     },
@@ -121,9 +124,13 @@ module.exports = [
           start: inputs.start_date,
           end: inputs.end_date,
         };
-        const response = await appHelper.Get(`${appHelper.LegacyV1BaseUrl}/listings/${request.params.id}/pricing?${querystring.stringify(args)}`);
+        const response = await appHelper.Get(
+          `${appHelper.LegacyV1BaseUrl}/listings/${
+            request.params.id
+          }/pricing?${new URLSearchParams(args).toString()}`
+        );
         return response.body;
       });
     },
-  }  
+  },
 ];
