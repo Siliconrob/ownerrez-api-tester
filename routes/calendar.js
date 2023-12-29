@@ -1,7 +1,6 @@
 const Joi = require("joi");
 const appHelper = require("../src/helpers");
 const dateHelper = require("../src/datetools");
-const querystring = require("querystring");
 const jcc = require("json-case-convertor");
 
 function dateRange(startDate, endDate, steps = 1) {
@@ -58,7 +57,7 @@ module.exports = [
         const response = await appHelper.Get(
           `${
             appHelper.LegacyV1BaseUrl
-          }/bookings/availability/?${querystring.stringify(args)}`
+          }/bookings/availability/?${new URLSearchParams(args).toString()}`
         );
         return jcc.snakeCaseKeys(response.body);
       });
@@ -107,7 +106,7 @@ module.exports = [
         const response = await appHelper.Get(
           `${
             appHelper.LegacyV1BaseUrl
-          }/bookings/calendar/?${querystring.stringify(args)}`
+          }/bookings/calendar/?${new URLSearchParams(args).toString()}`
         );
         return jcc.snakeCaseKeys(response.body);
       });

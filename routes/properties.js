@@ -1,6 +1,5 @@
 const Joi = require("joi");
 const appHelper = require("../src/helpers");
-const querystring = require("querystring");
 const dateHelper = require("../src/datetools");
 
 module.exports = [
@@ -91,9 +90,7 @@ module.exports = [
         );
 
         const response = await appHelper.Get(
-          `${appHelper.BaseUrl}/properties?${querystring.stringify(
-            appHelper.RemoveNullUndefined(inputs)
-          )}`
+          `${appHelper.BaseUrl}/properties?${new URLSearchParams(appHelper.RemoveNullUndefined(inputs)).toString()}`
         );
         return response.body;
       });
