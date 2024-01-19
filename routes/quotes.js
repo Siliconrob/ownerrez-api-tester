@@ -109,7 +109,11 @@ module.exports = [
     },
     handler: async (request, h) => {
       const quoteDetails = {
-        propertyId: Number(`0x${request.query.propertyId.replace(/orp5b/gi, '').replace(/x/gi, '')}`),
+        propertyId: Number(
+          `0x${request.query.propertyId
+            .replace(/orp5b/gi, "")
+            .replace(/x/gi, "")}`
+        ),
         arrival: dateHelper.dateOnly(request.query.start_date),
         departure: dateHelper.dateOnly(request.query.end_date),
         adults: request.payload.adults,
