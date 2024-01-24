@@ -61,20 +61,20 @@ module.exports = [
           throw err;
         },
         query: Joi.object({
-          propertyId: Joi.number()
+          propertyId: Joi.string()
             .required()
-            .default(1234)
+            .default("orp12345x")
             .description("Property Id"),
           start_date: Joi.date()
             .required()
             .iso()
-            .default(dateHelper.dateOnly(new Date(Date.now())))
+            .default(dateHelper.addDays(new Date(Date.now()), 30))
             .description("Arrival Date"),
           end_date: Joi.date()
             .required()
             .iso()
             .default(
-              dateHelper.dateOnly(dateHelper.addDays(new Date(Date.now()), 2))
+              dateHelper.dateOnly(dateHelper.addDays(new Date(Date.now()), 32))
             )
             .description("Departure Date"),
         }),
@@ -109,6 +109,11 @@ module.exports = [
     },
     handler: async (request, h) => {
       const quoteDetails = {
+        propertyId: Number(
+          `0x${request.query.propertyId
+            .replace(/orp5b/gi, "")
+            .replace(/x/gi, "")}`
+        ),
         arrival: dateHelper.dateOnly(request.query.start_date),
         departure: dateHelper.dateOnly(request.query.end_date),
         adults: request.payload.adults,
@@ -128,7 +133,7 @@ module.exports = [
 
       return await appHelper.GeneralErrorHandlerFn(async () => {
         const response = await appHelper.Post(
-          `${appHelper.LegacyV1BaseUrl}/quotes${urlParams.toString()}`,
+          `${appHelper.LegacyV1BaseUrl}/quotes?${urlParams.toString()}`,
           quoteDetails
         );
         return response.body;
