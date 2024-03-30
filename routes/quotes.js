@@ -68,7 +68,9 @@ module.exports = [
           start_date: Joi.date()
             .required()
             .iso()
-            .default(dateHelper.addDays(new Date(Date.now()), 30))
+            .default(
+              dateHelper.dateOnly(dateHelper.addDays(new Date(Date.now()), 30))
+            )
             .description("Arrival Date"),
           end_date: Joi.date()
             .required()
@@ -137,6 +139,70 @@ module.exports = [
           quoteDetails
         );
         return response.body;
+      });
+    },
+  },
+  {
+    method: "POST",
+    path: "/quotes/test",
+    options: {
+      description: "Create test a quote",
+      notes: "Creates a test quote ",
+      tags: ["api", "Quotes"],
+      validate: {
+        failAction: async (request, h, err) => {
+          // During development, log and respond with the full error.
+          console.log(err);
+          throw err;
+        },
+        query: Joi.object({
+          propertyId: Joi.string()
+            .required()
+            .default("orp12345x")
+            .description("Property Id"),
+          start_date: Joi.date()
+            .required()
+            .iso()
+            .default(
+              dateHelper.dateOnly(dateHelper.addDays(new Date(Date.now()), 30))
+            )
+            .description("Arrival Date"),
+          end_date: Joi.date()
+            .required()
+            .iso()
+            .default(
+              dateHelper.dateOnly(dateHelper.addDays(new Date(Date.now()), 32))
+            )
+            .description("Departure Date"),
+        }),
+        payload: Joi.object({
+          adults: Joi.number()
+            .required()
+            .default(2)
+            .description("Number of adults"),
+          children: Joi.number()
+            .required()
+            .default(0)
+            .description("Number of children"),
+        }),
+      },
+    },
+    handler: async (request, h) => {
+      const quoteDetails = {
+        propertyId: Number(
+          `0x${request.query.propertyId
+            .replace(/orp5b/gi, "")
+            .replace(/x/gi, "")}`
+        ),
+        arrival: dateHelper.dateOnly(request.query.start_date),
+        departure: dateHelper.dateOnly(request.query.end_date),
+        adults: request.payload.adults,
+        children: request.payload.children,
+      };
+      console.log(quoteDetails);
+
+      return await appHelper.GeneralErrorHandlerFn(async () => {
+        return await appHelper.CustomVerb("TEST", `${appHelper.LegacyV1BaseUrl}/quotes`, quoteDetails);
       });
     },
   },
