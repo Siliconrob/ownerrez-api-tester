@@ -1,5 +1,6 @@
 const appHelper = require("../src/helpers");
 const Joi = require("joi");
+const dateHelper = require("../src/datetools");
 
 module.exports = [
   {
@@ -9,14 +10,23 @@ module.exports = [
       description: "Get All Bookings",
       notes: "Returns all bookings",
       tags: ["api", "Bookings"],
+      validate: {
+        query: Joi.object({
+          since_date: Joi.date()
+            .optional()
+            .iso()
+            .default(dateHelper.dateOnly(appHelper.DefaultStartTime))
+            .description("Start Date"),
+        }),
+      },
     },
     handler: async (request, h) => {
       return await appHelper.GeneralErrorHandlerFn(async () => {
-        const response = await appHelper.Get(
-          `${
-            appHelper.BaseUrl
-          }/bookings/?since_utc=${appHelper.DefaultStartTime.toUTCString()}`
-        );
+        const inputs = { ...request.query };
+        const searchDate = dateHelper.dateOnly(inputs.since_date);
+        const bookingSearch = `${appHelper.BaseUrl}/bookings/?since_utc=${searchDate}`;
+        console.log(bookingSearch);
+        const response = await appHelper.Get(bookingSearch);
         return response.body;
       });
     },
