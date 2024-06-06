@@ -32,9 +32,17 @@ module.exports = [
       },
     },
     handler: async (request, h) => {
-      return await appHelper.GeneralErrorHandlerFn(async () => {
+      return await appHelper.GeneralErrorHandlerFn(async () => {        
+        const args = {
+          includeAmenities: true,
+          includeRooms: true,
+          includeBathrooms: true,
+          includeImages: true,
+          includeDescriptions: "html"
+        };
+        
         const response = await appHelper.Get(
-          `${appHelper.BaseUrl}/listings/${request.params.id}`
+          `${appHelper.BaseUrl}/listings/${request.params.id}?${new URLSearchParams(args).toString()}`
         );
         return response.body;
       });
