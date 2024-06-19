@@ -10,7 +10,7 @@
   },
   "dependencies": {
     "@hapi/boom": "^10.0.1",
-    "@hapi/hapi": "^21.3.9",
+    "@hapi/hapi": "^21.3.10",
     "@hapi/inert": "^7.1.0",
     "superagent": "^9.0.2",
     "joi": "^17.13.1",

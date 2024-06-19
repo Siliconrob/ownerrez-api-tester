@@ -65,13 +65,10 @@ module.exports = [
     handler: async (request, h) => {
       const urlParams = new URLSearchParams(request.query);
       return await appHelper.GeneralErrorHandlerFn(async () => {
-        const urlParams = new URLSearchParams(request.query);
-        return await appHelper.GeneralErrorHandlerFn(async () => {
-          const response = await appHelper.Post(
-            `${appHelper.BaseUrl}/tags`, Object.fromEntries(urlParams)
-          );
-          return response.body;
-        });
+        const response = await appHelper.Post(
+          `${appHelper.BaseUrl}/tags`, Object.fromEntries(urlParams)
+        );
+        return response.body;
       });
     },
   }  
