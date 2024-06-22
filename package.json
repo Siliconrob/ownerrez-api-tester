@@ -13,7 +13,7 @@
     "@hapi/hapi": "^21.3.10",
     "@hapi/inert": "^7.1.0",
     "superagent": "^9.0.2",
-    "joi": "^17.13.1",
+    "joi": "^17.13.3",
     "hapi-swagger": "^17.2.1",
     "@hapi/vision": "^7.0.3",
     "@hapipal/haute-couture": "^4.3.1",
