@@ -7,7 +7,7 @@ This project includes a Node.js server script
 - This project uses the [Hapijs](https://hapi.dev/) framework (I hope it makes you as happy as it does for me to use 😁) and explores basic routes on the [OwnerRez API](https://api.ownerreservations.com/help/v2).
 - **Do not use this in production**
 
-_Last updated: 23 Aug 2024_
+_Last updated: 17 Dec 2023_
 
 ## Prerequisites
 
